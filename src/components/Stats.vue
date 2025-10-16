@@ -42,12 +42,12 @@ const stats = ref([
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg);
   padding: 2rem;
   border-radius: 0.75rem;
   border: 1px solid var(--border);
   text-align: center;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
 .stat-card:hover {

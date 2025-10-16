@@ -27,10 +27,6 @@ body.dark-mode .card {
   background: var(--bg-secondary);
 }
 
-body.dark-mode .header {
-  background: rgba(15, 23, 42, 0.95) !important;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;

@@ -89,13 +89,17 @@ const handleLogout = () => {
 
 <style scoped>
 .header {
-  background: white;
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.95);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+:global(body.dark-mode) .header {
+  background: rgba(15, 23, 42, 0.95);
 }
 
 .nav {

@@ -80,9 +80,10 @@ const handleSubmit = () => {
 
 <style scoped>
 .hero-section {
-  background: linear-gradient(135deg, var(--brand-light) 0%, white 100%);
+  background: linear-gradient(135deg, var(--brand-light) 0%, var(--bg) 100%);
   padding: 4rem 0 3rem;
   text-align: center;
+  transition: background 0.3s ease;
 }
 
 .hero-section h1 {
@@ -126,6 +127,8 @@ const handleSubmit = () => {
   font-family: inherit;
   font-size: 1rem;
   transition: border-color 0.2s;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .form-group input:focus,

@@ -44,7 +44,8 @@ const features = ref([
 
 <style scoped>
 .features-section {
-  background: white;
+  background: var(--bg);
+  transition: background 0.3s ease;
 }
 
 .features-grid {

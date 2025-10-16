@@ -18,8 +18,9 @@
 
 <style scoped>
 .hero {
-  background: linear-gradient(135deg, var(--brand-light) 0%, white 50%);
+  background: linear-gradient(135deg, var(--brand-light) 0%, var(--bg) 50%);
   padding: 6rem 0 5rem;
+  transition: background 0.3s ease;
 }
 
 .hero-content {
