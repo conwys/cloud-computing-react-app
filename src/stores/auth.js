@@ -9,7 +9,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!token.value && !!user.value);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://172.166.116.129:3000/api';
+  // Use relative path for API calls - Nginx will proxy /api/* to backend
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   async function register(userData) {
     loading.value = true;
