@@ -1,64 +1,90 @@
 <template>
-  <div class="features">
-    <div class="card-grid">
-      <div class="card">
-        <h3>Air Quality</h3>
-        <p>Real‑time monitoring around schools and busy corridors.</p>
+  <section class="features-section section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Core Solutions</h2>
+        <p>Proven IoT technologies deployed across Milton Keynes demonstrator sites</p>
       </div>
-      <div class="card">
-        <h3>Smart Parking</h3>
-        <p>Live bay occupancy and guidance to reduce congestion.</p>
-      </div>
-      <div class="card">
-        <h3>Active Travel</h3>
-        <p>People‑centric data to design safer walking & cycling routes.</p>
+      <div class="features-grid">
+        <div class="feature-card card" v-for="feature in features" :key="feature.title">
+          <div class="feature-icon">
+            <component :is="feature.icon" :size="48" :stroke-width="1.5" />
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+          <router-link to="/services" class="learn-more">Learn more →</router-link>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
-<style scoped>
-.features {
-  padding: 0 20px;
-}
+<script setup>
+import { ref } from 'vue';
+import { Wind, ParkingCircle, Bike } from 'lucide-vue-next';
 
-.card-grid {
-  max-width: 1100px;
-  margin: 26px auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 6px 24px rgba(2, 6, 23, 0.06);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(2, 6, 23, 0.1);
-}
-
-.card h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  color: var(--text);
-}
-
-.card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-}
-
-@media (max-width: 900px) {
-  .card-grid {
-    grid-template-columns: 1fr;
+const features = ref([
+  {
+    icon: Wind,
+    title: 'Air Quality Monitoring',
+    description: 'Real-time environmental sensors tracking PM2.5, NO2, and CO2 levels across the city to improve public health.'
+  },
+  {
+    icon: ParkingCircle,
+    title: 'Smart Parking',
+    description: 'IoT-enabled parking spaces with live availability, reducing congestion and improving traffic flow.'
+  },
+  {
+    icon: Bike,
+    title: 'Active Travel Tracking',
+    description: 'Data-driven insights into cycling and walking patterns to promote sustainable transport options.'
   }
+]);
+</script>
+
+<style scoped>
+.features-section {
+  background: white;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.feature-icon {
+  color: var(--brand);
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-card h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.learn-more {
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.learn-more:hover {
+  transform: translateX(4px);
 }
 </style>
