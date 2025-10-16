@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Sun, Moon } from 'lucide-vue-next';
 import { useAuthStore } from '../stores/auth';
@@ -51,9 +51,34 @@ const isDark = ref(false);
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const user = computed(() => authStore.user);
 
+// Initialize theme from localStorage
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    isDark.value = true;
+    document.body.classList.add('dark-mode');
+  } else if (savedTheme === 'light') {
+    isDark.value = false;
+    document.body.classList.remove('dark-mode');
+  } else {
+    // Check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    isDark.value = prefersDark;
+    if (prefersDark) {
+      document.body.classList.add('dark-mode');
+    }
+  }
+});
+
 const toggleTheme = () => {
   isDark.value = !isDark.value;
-  document.body.classList.toggle('dark-mode');
+  if (isDark.value) {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+  }
 };
 
 const handleLogout = () => {

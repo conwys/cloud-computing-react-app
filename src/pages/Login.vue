@@ -143,8 +143,9 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--brand-light) 0%, white 100%);
+  background: linear-gradient(135deg, var(--brand-light) 0%, var(--bg) 100%);
   padding: 2rem 1rem;
+  transition: background 0.3s ease;
 }
 
 .auth-container {
@@ -154,6 +155,7 @@ const handleSubmit = async () => {
 
 .auth-card {
   padding: 3rem 2.5rem;
+  background: var(--bg);
 }
 
 .auth-header {
@@ -191,11 +193,13 @@ const handleSubmit = async () => {
 .form-group input {
   width: 100%;
   padding: 0.85rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s;
   font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .form-group input:focus {
@@ -205,13 +209,19 @@ const handleSubmit = async () => {
 }
 
 .error-message {
-  background: #fee;
-  color: #c00;
+  background: #fee2e2;
+  color: #991b1b;
   padding: 0.85rem 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
-  border-left: 4px solid #c00;
+  border-left: 4px solid #dc2626;
+}
+
+:global(body.dark-mode) .error-message {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-left-color: #ef4444;
 }
 
 .btn-primary {
@@ -230,6 +240,7 @@ const handleSubmit = async () => {
 
 .btn-primary:hover:not(:disabled) {
   background: var(--brand-dark);
+  color: white;
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
@@ -242,7 +253,7 @@ const handleSubmit = async () => {
 .auth-footer {
   text-align: center;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
 }
 
 .auth-footer p {
