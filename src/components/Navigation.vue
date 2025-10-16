@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'dark': isDark }">
     <div class="container">
       <nav class="nav">
         <router-link to="/" class="logo">
@@ -98,7 +98,7 @@ const handleLogout = () => {
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-:global(body.dark-mode) .header {
+.header.dark {
   background: rgba(15, 23, 42, 0.95);
 }
 
