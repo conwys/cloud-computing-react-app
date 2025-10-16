@@ -23,7 +23,14 @@
             <Sun v-if="isDark" :size="20" />
             <Moon v-else :size="20" />
           </button>
-          <router-link to="/contact" class="btn btn-primary">Get Started</router-link>
+          
+          <template v-if="isAuthenticated">
+            <span class="user-email">{{ user?.email }}</span>
+            <button @click="handleLogout" class="btn btn-secondary">Logout</button>
+          </template>
+          <template v-else>
+            <router-link to="/login" class="btn btn-primary">Login</router-link>
+          </template>
         </div>
       </nav>
     </div>
@@ -31,14 +38,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { Sun, Moon } from 'lucide-vue-next';
+import { useAuthStore } from '../stores/auth';
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const isDark = ref(false);
+
+const isAuthenticated = computed(() => authStore.isAuthenticated);
+const user = computed(() => authStore.user);
 
 const toggleTheme = () => {
   isDark.value = !isDark.value;
   document.body.classList.toggle('dark-mode');
+};
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push('/login');
 };
 </script>
 
@@ -107,6 +127,28 @@ const toggleTheme = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.user-email {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--brand-light);
+  color: var(--brand);
+  border-color: var(--brand);
 }
 
 .theme-toggle {

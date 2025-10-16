@@ -4,6 +4,7 @@ import Services from '../pages/Services.vue';
 import Projects from '../pages/Projects.vue';
 import About from '../pages/About.vue';
 import Contact from '../pages/Contact.vue';
+import Login from '../pages/Login.vue';
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/contact',
     name: 'Contact',
     component: Contact
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ];
 
