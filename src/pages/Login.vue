@@ -216,13 +216,10 @@ const handleSubmit = async () => {
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
   border-left: 4px solid #dc2626;
+  transition: all 0.3s ease;
 }
 
-:global(body.dark-mode) .error-message {
-  background: #7f1d1d;
-  color: #fca5a5;
-  border-left-color: #ef4444;
-}
+
 
 .btn-primary {
   width: 100%;
@@ -276,5 +273,14 @@ const handleSubmit = async () => {
 
 .link-button:hover {
   text-decoration: underline;
+}
+</style>
+
+<style>
+/* Unscoped dark mode styles for error message - specific to auth page only */
+body.dark-mode .auth-page .error-message {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-left-color: #ef4444;
 }
 </style>
