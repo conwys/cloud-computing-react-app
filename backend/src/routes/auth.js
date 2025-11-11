@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
 import User from '../models/User.js';
+import db from '../config/database.js';
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
@@ -218,3 +219,21 @@ router.post('/logout', authMiddleware, (req, res) => {
 });
 
 export default router;
+
+// Extra route: expose latest job results stored in dbo.PblReport_Results (Azure SQL)
+// @route   GET /api/auth/job-results
+// @desc    Returns latest entries from PblReport_Results
+// @access  Public (or protect if needed)
+router.get('/job-results', async (req, res) => {
+  try {
+    const rows = await db.query(`
+      SELECT TOP 20 ReportName, ResultValue, [Timestamp]
+      FROM dbo.PblReport_Results
+      ORDER BY [Timestamp] DESC
+    `);
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error('Job results error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch job results' });
+  }
+});

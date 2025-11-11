@@ -1,49 +1,48 @@
-import pool from './database.js';
+import db from './database.js';
 
 const createTables = async () => {
-  const client = await pool.connect();
-  
   try {
     console.log('🔨 Creating database tables...');
 
-    // Users table
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        full_name VARCHAR(255),
-        organization VARCHAR(255),
-        role VARCHAR(50) DEFAULT 'user',
-        is_active BOOLEAN DEFAULT true,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
+    // Users table (Azure SQL)
+    await db.query(`
+      IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name='users' AND schema_id = SCHEMA_ID('dbo'))
+      BEGIN
+        CREATE TABLE dbo.users (
+          id INT IDENTITY(1,1) PRIMARY KEY,
+          email NVARCHAR(255) NOT NULL UNIQUE,
+          password_hash NVARCHAR(255) NOT NULL,
+          full_name NVARCHAR(255),
+          organization NVARCHAR(255),
+          role NVARCHAR(50) DEFAULT 'user',
+          is_active BIT DEFAULT 1,
+          created_at DATETIME2 DEFAULT SYSUTCDATETIME(),
+          updated_at DATETIME2 DEFAULT SYSUTCDATETIME()
+        );
+        CREATE INDEX idx_users_email ON dbo.users(email);
+      END
     `);
 
-    // Create index on email for faster lookups
-    await client.query(`
-      CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-    `);
-
-    // Activity logs table (optional - for tracking user actions)
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS activity_logs (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        action VARCHAR(100) NOT NULL,
-        ip_address VARCHAR(45),
-        user_agent TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
+    // Activity logs table
+    await db.query(`
+      IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name='activity_logs' AND schema_id = SCHEMA_ID('dbo'))
+      BEGIN
+        CREATE TABLE dbo.activity_logs (
+          id INT IDENTITY(1,1) PRIMARY KEY,
+          user_id INT NOT NULL,
+          action NVARCHAR(100) NOT NULL,
+          ip_address NVARCHAR(45),
+          user_agent NVARCHAR(MAX),
+          created_at DATETIME2 DEFAULT SYSUTCDATETIME(),
+          CONSTRAINT fk_logs_user FOREIGN KEY (user_id) REFERENCES dbo.users(id)
+        );
+      END
     `);
 
     console.log('✅ Database tables created successfully');
   } catch (error) {
     console.error('❌ Error creating tables:', error);
     throw error;
-  } finally {
-    client.release();
   }
 };
 
